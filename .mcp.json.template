@@ -1,0 +1,9 @@
+{
+  "_README": "이 파일을 작업 폴더에 두고 파일명을 '.mcp.json'으로 바꾸세요. Node.js 18 이상이 필요합니다. 기본은 Playwright MCP(별도 프로필의 새 브라우저, 로그인 없음)입니다. Claude in Chrome을 쓰려면 INSTALL.md STEP 3의 "선택 2"를 따르세요.",
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
