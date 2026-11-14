@@ -14,7 +14,7 @@
 |---|---|---|
 | Claude 유료 구독 (Pro 이상) | Claude Code 사용 | 플랜별 사용 범위는 공식 안내 확인 |
 | Node.js 18 이상 | **브라우저 도구(Playwright MCP)를 켜는 데 필요** | nodejs.org에서 LTS 설치. 아래 설명 참고 |
-| Git (선택) | 저장소를 직접 내려받을 때만 | ZIP 파일로 받으면 필요 없음 |
+| Git | 저장소를 클론할 때 | 없으면 ZIP으로 받을 수 있음 (STEP 2 방법 B) |
 
 > **왜 Node.js가 필요한가요?** Claude 데스크톱 앱 자체는 Node.js 없이 동작합니다. 하지만 리뷰를 읽는 브라우저 도구(Playwright MCP)가 Node.js로 실행되기 때문에 따로 설치해야 합니다. 브라우저 도구를 쓰지 않고 리뷰를 직접 붙여 넣는 방식(`USAGE.md` 참고)으로도 쓸 수 있으니, Node 설치가 어렵다면 그 방식으로 시작하세요.
 
@@ -38,30 +38,57 @@
 
 ---
 
-## STEP 2 - 스킬 설치
+## STEP 2 - 스킬 설치 (GitHub에서 클론)
 
-> Claude Code는 스킬을 **`.claude/skills/`** 폴더에서 찾습니다. 그냥 `skills/`에 두면 인식되지 않습니다.
+> Claude Code는 스킬을 **`.claude/skills/`** 폴더에서 찾습니다. 저장소를 내려받기만 해서는 인식되지 않고, 스킬 폴더를 **`.claude/skills/`로 복사**해야 합니다.
 > 폴더 이름이 점(.)으로 시작하면 파일 탐색기에서 **숨겨져** 있을 수 있습니다.
 > - **[Win]** 탐색기 위쪽 `보기` > `표시` > `숨긴 항목`을 켭니다.
 > - **[Mac]** Finder에서 `Command + Shift + .`(마침표)를 누르면 숨김 파일이 보입니다.
 
-### 방법 A. ZIP 파일로 직접 복사 (가장 확실, 권장)
-강사가 준 `ai-product-content-planner.zip`을 사용합니다. 저장소가 비공개이면 이 방법을 쓰세요.
-1. ZIP 파일의 압축을 풉니다.
-2. 작업 폴더 안에 `.claude` 폴더를, 그 안에 `skills` 폴더를 만듭니다.
-3. 압축을 푼 폴더의 **`skills` 안에 있는 폴더들**(content-start, site-scan 등 8개)을 방금 만든 `.claude/skills/`로 복사합니다. (`skills` 폴더 자체가 아니라 그 안의 내용입니다)
-   - **터미널로 하려면 [Mac]** `mkdir -p ~/content-planner/.claude/skills && cp -R 내려받은폴더/skills/* ~/content-planner/.claude/skills/`
-   - **터미널로 하려면 [Win]** PowerShell: `New-Item -ItemType Directory -Force $HOME\content-planner\.claude\skills; Copy-Item -Recurse 내려받은폴더\skills\* $HOME\content-planner\.claude\skills\`
-4. 압축을 푼 폴더의 `templates` 폴더도 작업 폴더에 복사해 두면 편합니다(선택).
+저장소 주소: `https://github.com/paulsign-lab/ai-product-content-planner.git`
+
+### 2-1. Git 설치 확인 (클론에 필요)
+터미널(**[Win]** PowerShell, **[Mac]** 터미널)에서 `git --version`을 입력합니다.
+- 버전이 나오면 설치되어 있습니다.
+- **[Win]** 없으면 https://git-scm.com 에서 설치하고 터미널을 다시 엽니다.
+- **[Mac]** "개발자 도구를 설치하시겠습니까?"라는 창이 뜨면 **설치**를 누르고 끝날 때까지 기다립니다. 몇 분 걸릴 수 있습니다.
+- Git 설치가 어렵다면 아래 **방법 B(ZIP)** 를 쓰세요.
+
+### 방법 A. 클론해서 복사 (권장)
+**A-1. Claude에게 맡기기 (가장 쉬움).** 작업 폴더에서 Claude(또는 Code 탭)를 열고 그대로 입력합니다.
+```
+https://github.com/paulsign-lab/ai-product-content-planner.git 를 이 폴더에 클론하고,
+클론한 폴더의 skills 안에 있는 스킬 폴더들을 이 폴더의 .claude/skills/ 에 복사해줘.
+templates 폴더도 이 폴더로 복사해줘. 끝나면 설치된 스킬 이름을 알려줘.
+```
+승인 창이 여러 번 뜹니다. 이 작업 폴더 안의 파일 만들기와 복사만 허용하세요. 끝나면 앱을 한 번 재시작합니다.
+
+**A-2. 터미널로 직접.**
+- **[Mac]**
+  ```
+  cd ~/content-planner
+  git clone https://github.com/paulsign-lab/ai-product-content-planner.git
+  mkdir -p .claude/skills
+  cp -R ai-product-content-planner/skills/* .claude/skills/
+  cp -R ai-product-content-planner/templates .
+  ```
+- **[Win]** PowerShell
+  ```
+  cd $HOME\content-planner
+  git clone https://github.com/paulsign-lab/ai-product-content-planner.git
+  New-Item -ItemType Directory -Force .claude\skills
+  Copy-Item -Recurse ai-product-content-planner\skills\* .claude\skills\
+  Copy-Item -Recurse ai-product-content-planner\templates .
+  ```
+`skills` 폴더 자체가 아니라 **그 안의 폴더들**(content-start 등 8개)을 `.claude/skills/`로 복사한다는 점에 주의하세요.
+
+**나중에 업데이트 받기:** 클론한 폴더(`ai-product-content-planner`)에서 `git pull`을 실행한 뒤, 위 복사 명령을 다시 실행하면 최신 스킬로 바뀝니다.
+
+### 방법 B. ZIP으로 받기 (Git이 없을 때)
+1. 저장소 페이지(https://github.com/paulsign-lab/ai-product-content-planner)에서 초록색 **Code** 버튼 > **Download ZIP**.
+2. 압축을 풀고, 작업 폴더에 `.claude/skills` 폴더를 만든 뒤 압축을 푼 폴더의 `skills` **안의 폴더들**을 그곳으로 복사합니다. `templates` 폴더도 작업 폴더로 복사합니다.
 
 > **어느 폴더에서나 쓰고 싶다면** 작업 폴더 대신 사용자 폴더의 `.claude/skills/`(**[Mac]** `~/.claude/skills/`, **[Win]** `C:\Users\내이름\.claude\skills\`)에 복사합니다. 이 경우 모든 프로젝트에서 스킬이 보입니다.
-
-### 방법 B. Claude에게 맡기기 (저장소 접근 권한이 있을 때)
-저장소를 볼 수 있는 계정이라면 Claude Code(또는 Code 탭)에 아래처럼 입력합니다. 저장소 주소는 강사가 알려 드립니다.
-```
-<저장소 주소> 이 레포를 클론하고, 안의 skills 폴더에 있는 스킬들을 .claude/skills/ 에 설치해줘.
-```
-이 방법은 Git이 설치되어 있어야 하고, 승인창이 여러 번 뜹니다. 설치 후 앱을 한 번 재시작하세요.
 
 ### 설치 확인
 입력창에 `/`를 입력했을 때 `content-start` 등 **스킬 8개**가 목록에 보이면 성공입니다. 안 보이면 앱을 완전히 종료했다가 다시 여세요.
@@ -83,7 +110,7 @@
 - **특징:** 항상 **새 브라우저(로그인 안 된 깨끗한 상태)** 로 열립니다. 이 스킬의 원칙(로그인하지 않고 공개 페이지만)과 맞습니다.
 - **필요:** Node.js 18 이상 (위 0번 참고)
 - **연결 방법 1 (Claude Code 터미널):** `claude mcp add playwright npx @playwright/mcp@latest`
-- **연결 방법 2 (파일 이름 바꾸기):** 압축을 푼 폴더의 `.mcp.json.template` 파일을 작업 폴더에 복사하고 이름을 **`.mcp.json`** 으로 바꿉니다.
+- **연결 방법 2 (파일 이름 바꾸기):** 클론하거나 압축을 푼 폴더의 `.mcp.json.template` 파일을 작업 폴더에 복사하고 이름을 **`.mcp.json`** 으로 바꿉니다.
   - **데스크톱 앱 주의:** 공식 문서상 Code 탭은 `.mcp.json` 같은 설정 파일을 앱 안에서 수정하지 못할 수 있습니다. **Claude에게 만들어 달라고 하지 말고, 파일 탐색기에서 직접** 이름을 바꾸세요.
   - **[Win]** 탐색기에서 이름 바꾸기가 안 되면 PowerShell에서 `Rename-Item .mcp.json.template .mcp.json` (파일이 있는 폴더에서)
   - **[Mac]** 터미널에서 `mv .mcp.json.template .mcp.json`
@@ -119,7 +146,7 @@
 콘텐츠 분석 시작하자
 ```
 스킬이 먼저 진행 방식을 묻습니다. **처음이라면 "교육 모드"** 를 고르세요. 단계마다 설명하고 확인한 뒤 넘어갑니다.
-처음에는 `examples/paulsign-us-serum/`의 `brand.md`와 `competitors.md`를 작업 폴더에 복사해 두고 흐름을 먼저 익혀도 좋습니다.
+처음에는 클론한 폴더의 `examples/paulsign-us-serum/`에 있는 `brand.md`와 `competitors.md`를 작업 폴더에 복사해 두고 흐름을 먼저 익혀도 좋습니다.
 자세한 활용법은 [`USAGE.md`](USAGE.md)를 보세요.
 
 ---
