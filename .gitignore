@@ -1,0 +1,6 @@
+# 작업 결과와 개인 설정은 올리지 않습니다
+/outputs/
+.mcp.json
+.env
+.DS_Store
+node_modules/
